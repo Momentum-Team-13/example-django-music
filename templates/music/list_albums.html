@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% if messages %}
+<div class="messages ba br2 b--silver bg-washed-green pa2">
+  {% for message in messages %}
+  <p{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<section class="album-list">
+  <h1>All Albums</h1>
+  {% for album in albums %}
+  <div class="album mv4 pa3 br1 measure-narrow ba b--light-silver">
+      <a href={% url 'show_album' pk=album.pk %} class="album_title f3 fw6 db dark-pink no-underline underline-hover">{{ album.title }}</a>
+      <p class="mv3 f4">{{ album.artist.name }} </p>
+      <p class="mv3 f6 i gray">{{ album.release_date }} </p>
+  </div>
+  {% empty %}
+  <h2>Sorry, there are no results for that search term.</h2>
+  {% endfor %}
+</section>
+
+<section class="add-album mt4">
+  <a href={% url 'add_album' %} class="db dark-pink link dim"><i class="fa fa-plus ph2"></i>add a new album</a>
+</section>
+{% endblock content %}

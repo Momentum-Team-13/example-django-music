@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title%}Add album{% endblock title%}
+
+{% block content %}
+<h1>Add a new album</h1>
+<div class="form">
+  <form method="POST" class="pa4 black-80">
+    {% csrf_token %}
+    {% for field in form %}
+    <div class="measure">
+      <label for="{{field.id_for_label}}" class="f6 b db mb2">{{ field.label}}</label>
+      {{ field }}
+    </div>
+    {% endfor %}
+    <div class="submit mt3">
+      <button type="submit" class="f6 link dim br3 ba bw1 ph3 pv2 mb2 dib dark-pink">Save</button>
+    </div>
+  </form>
+</div>
+{% endblock content %}

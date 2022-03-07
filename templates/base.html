@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% block meta %}{% endblock meta %}
+  <link rel="stylesheet" href="https://unpkg.com/tachyons@4.12.0/css/tachyons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <title>{% block title %}{% endblock title %}</title>
+  {% block javascript %}{% endblock javascript %}
+</head>
+
+<body class="sans-serif">
+  <header class="header bg-black b--white-10 flex justify-between">
+    <a href={% url "home" %} class="f3 lh-title white items-center no-underline"><h1 class="f3 lh-title white items-center"><i class="fas fa-headphones white ph2"></i>Django Music</h1></a>
+  </header>
+
+  <div class="ma5">
+    {% block content %}
+    {% endblock content %}
+  </div>
+</body>
+
+</html>

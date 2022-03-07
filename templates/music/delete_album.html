@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+  <form action="{% url 'delete_album' pk=album.pk %}" method="POST">
+    {% csrf_token %}
+    <p>Are you sure you want to delete <span class="dark-pink b">{{ album.title }} by {{ album.artist.name }}</span>?</p>
+    <div>
+      <button class="f6 link dim br1 ph3 pv2 mb2 dib white bg-dark-pink" type="submit">Delete Album</button><br />
+      <a href="{% url 'list_albums' %}" class="mt3 f6 link dim br1 ba ph3 pv2 mb2 dib dark-pink">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block javascript %}
+<script src={% static 'js/show_album.js' %} defer></script>
+{% endblock javascript %}
+
+{% block content %}
+
+<h3>Album Detail</h3>
+
+<a href={% url 'list_albums' %}>Back to all albums</a>
+<div class="ma5 pa2 lh-copy ba b--light-silver br2">
+  <p class="album_title f2 fw6 db black">{{ album.title }}</p>
+  <p class="f3 dark-pink b">{{ album.artist.name }}</p>
+  <p class="f5 gray">{{ album.release_date }}</p>
+  <a href={% url 'edit_album' pk=album.pk%} class="f8 blue no-underline underline-hover"><i class="fa fa-edit ph2 pink"></i>edit</a>
+      <a href={% url 'delete_album' pk=album.pk%} class="f8 blue no-underline underline-hover"><i class="fa fa-times ph2 pink"></i>delete</a>
+</div>
+
+{% endblock content %}
+
