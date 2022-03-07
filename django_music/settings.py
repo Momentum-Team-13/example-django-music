@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
-import os
 import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,8 +27,8 @@ environ.Env.read_env()
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-dz0rt_=(*q+^!y+**44*_9f$z8ygy1nykw1xh&=d6$#oln$d*w"
-
+# SECRET_KEY = "django-insecure-dz0rt_=(*q+^!y+**44*_9f$z8ygy1nykw1xh&=d6$#oln$d*w"
+SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DEBUG")
 
@@ -39,6 +38,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "registration",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -141,3 +141,6 @@ INTERNAL_IPS = [
 ]
 
 AUTH_USER_MODEL = "users.CustomUser"
+
+ACCOUNT_ACTIVATION_DAYS = 7
+LOGIN_REDIRECT_URL = "/"

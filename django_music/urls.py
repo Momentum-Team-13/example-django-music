@@ -15,11 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf import settings
-from django.urls import path
+from django.urls import path, include
 from music import views as music_views
 
 urlpatterns = [
     path("", music_views.list_albums, name="home"),
+    path("accounts/", include("registration.backends.simple.urls")),
     path("admin/", admin.site.urls),
     path("albums/", music_views.list_albums, name="list_albums"),
     path("albums/new", music_views.add_album, name="add_album"),
@@ -30,7 +31,6 @@ urlpatterns = [
 
 if settings.DEBUG:
     import debug_toolbar
-    from django.urls import include
 
     urlpatterns += [
         path("__debug__/", include(debug_toolbar.urls)),
