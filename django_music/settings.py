@@ -144,3 +144,4 @@ AUTH_USER_MODEL = "users.CustomUser"
 
 ACCOUNT_ACTIVATION_DAYS = 7
 LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "auth_login"

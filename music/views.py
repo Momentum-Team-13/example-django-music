@@ -1,14 +1,23 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Album, Artist
 from .forms import AlbumForm
 
 
+def home(request):
+    if request.user.is_authenticated:
+        return redirect("list_albums")
+    return render(request, "music/home.html")
+
+
+@login_required
 def list_albums(request):
     albums = Album.objects.all().order_by("title")
     return render(request, "music/list_albums.html", {"albums": albums})
 
 
+@login_required
 def add_album(request):
     if request.method == "POST":
         form = AlbumForm(data=request.POST)
