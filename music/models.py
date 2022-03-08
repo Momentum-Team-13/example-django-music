@@ -16,6 +16,7 @@ class Album(BaseModel):
         "Artist", on_delete=models.SET_NULL, null=True, blank=True
     )
     release_date = models.DateField(blank=True, null=True)
+    genres = models.ManyToManyField("Genre", related_name="albums")
 
     def __repr__(self):
         return f"<Album {self.title} pk={self.pk} >"
@@ -42,7 +43,7 @@ class Artist(BaseModel):
 
 class Genre(BaseModel):
     name = models.CharField(max_length=75)
-    slug = models.SlugField(max_length=75, null=True, blank=True, unique=True)
+    slug = models.SlugField(max_length=75, blank=True, unique=True)
 
     def __str__(self):
         return self.name

@@ -27,6 +27,7 @@ urlpatterns = [
     path("albums/<int:pk>", music_views.show_album, name="show_album"),
     path("albums/<int:pk>/edit", music_views.edit_album, name="edit_album"),
     path("albums/<int:pk>/delete", music_views.delete_album, name="delete_album"),
+    path("genres/<slug:slug>", music_views.show_genre, name="show_genre"),
 ]
 
 if settings.DEBUG:

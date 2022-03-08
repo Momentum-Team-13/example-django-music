@@ -62,3 +62,10 @@ def delete_album(request, pk):
         return redirect("list_albums")
 
     return render(request, "music/delete_album.html", {"album": album})
+
+
+def show_genre(request, slug):
+    print(slug)
+    albums = Album.objects.filter(genres__slug=slug)
+
+    return render(request, "music/list_albums.html", {"albums": albums})
