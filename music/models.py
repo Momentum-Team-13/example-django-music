@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.text import slugify
 
 
 class BaseModel(models.Model):
@@ -37,3 +38,18 @@ class Artist(BaseModel):
 
     def __str__(self):
         return self.name
+
+
+class Genre(BaseModel):
+    name = models.CharField(max_length=75)
+    slug = models.SlugField(max_length=75, null=True, blank=True, unique=True)
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return f"<Genre name={self.name}>"
+
+    def save(self):
+        self.slug = slugify(self.name)
+        super().save()
