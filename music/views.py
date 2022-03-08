@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Album, Artist
+from .models import Album, Artist, Genre
 from .forms import AlbumForm
 
 
@@ -36,7 +36,7 @@ def show_album(request, pk):
     return render(
         request,
         "music/show_album.html",
-        {"album": album},
+        {"album": album, "genres": album.genres.all()},
     )
 
 
@@ -65,7 +65,10 @@ def delete_album(request, pk):
 
 
 def show_genre(request, slug):
-    print(slug)
-    albums = Album.objects.filter(genres__slug=slug)
+    # albums = Album.objects.filter(genres__slug=slug)
+    # I could do this ☝️ but...
+    # even better to get all the albums associated with a genre:
+    genre = get_object_or_404(Genre, slug=slug)
+    albums = genre.albums.all()
 
-    return render(request, "music/list_albums.html", {"albums": albums})
+    return render(request, "music/show_genre.html", {"genre": genre, "albums": albums})

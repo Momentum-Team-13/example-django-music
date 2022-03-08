@@ -2,10 +2,6 @@
 
 {% load static %}
 
-{% block javascript %}
-<script src={% static 'js/show_album.js' %} defer></script>
-{% endblock javascript %}
-
 {% block content %}
 
 <h3>Album Detail</h3>
@@ -15,8 +11,13 @@
   <p class="album_title f2 fw6 db black">{{ album.title }}</p>
   <p class="f3 dark-pink b">{{ album.artist.name }}</p>
   <p class="f5 gray">{{ album.release_date }}</p>
-  <a href={% url 'edit_album' pk=album.pk%} class="f8 blue no-underline underline-hover"><i class="fa fa-edit ph2 pink"></i>edit</a>
-      <a href={% url 'delete_album' pk=album.pk%} class="f8 blue no-underline underline-hover"><i class="fa fa-times ph2 pink"></i>delete</a>
+  {% for genre in genres %}
+    <a href={% url 'show_genre' slug=genre.slug %} class="f7 link br-pill ba bw1 ph2 pv1 mb2 dib white bg-dark-gray">{{genre}}</a>
+  {% endfor %}
+  <div>
+    <a href={% url 'edit_album' pk=album.pk%} class="f8 blue no-underline underline-hover"><i class="fa fa-edit ph2 pink"></i>edit</a>
+  <a href={% url 'delete_album' pk=album.pk%} class="f8 blue no-underline underline-hover"><i class="fa fa-times ph2 pink"></i>delete</a>
+  </div>
 </div>
 
 {% endblock content %}
