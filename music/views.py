@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Album, Artist, Genre
 from .forms import AlbumForm
@@ -17,7 +17,12 @@ def list_albums(request):
     return render(request, "music/list_albums.html", {"albums": albums})
 
 
+def check_admin_user(user):
+    return user.is_staff
+
+
 @login_required
+@user_passes_test(check_admin_user)
 def add_album(request):
     if request.method == "POST":
         form = AlbumForm(data=request.POST)
