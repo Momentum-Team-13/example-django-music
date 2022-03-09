@@ -41,10 +41,19 @@ def add_album(request):
 def show_album(request, pk):
     album = get_object_or_404(Album, pk=pk)
     favorited = album_is_favorited(album, request.user)
+    if favorited:
+        toggle_favorited_url = "delete_favorite"
+    else:
+        toggle_favorited_url = "add_favorite"
     return render(
         request,
         "music/show_album.html",
-        {"album": album, "genres": album.genres.all(), "favorited": favorited},
+        {
+            "album": album,
+            "genres": album.genres.all(),
+            "favorited": favorited,
+            "toggle_favorited_url": toggle_favorited_url,
+        },
     )
 
 
@@ -90,4 +99,11 @@ def add_favorite(request, album_pk):
     user = request.user
     user.favorite_albums.add(album)
     # just redirect to the show_album page
+    return redirect("show_album", pk=album.pk)
+
+
+def delete_favorite(request, album_pk):
+    album = get_object_or_404(Album, pk=album_pk)
+    request.user.favorite_albums.remove(album)
+
     return redirect("show_album", pk=album.pk)

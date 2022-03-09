@@ -32,6 +32,11 @@ urlpatterns = [
         music_views.add_favorite,
         name="add_favorite",
     ),
+    path(
+        "albums/<int:album_pk>/delete_favorite",
+        music_views.delete_favorite,
+        name="delete_favorite",
+    ),
     path("genres/<slug:slug>", music_views.show_genre, name="show_genre"),
 ]
 

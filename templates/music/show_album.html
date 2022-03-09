@@ -15,12 +15,12 @@
     <a href={% url 'show_genre' slug=genre.slug %} class="f7 link br-pill ba bw1 ph2 pv1 mb2 dib white bg-dark-gray">{{genre}}</a>
   {% endfor %}
   <div class="favorite">
-    <a href={% url "add_favorite" album_pk=album.pk %} class="fav-link db">
+    <a href={% url toggle_favorited_url album_pk=album.pk %} class="fav-link db">
       <i class="{% if favorited %} fas {% else %} far {% endif %} fa-heart hot-pink f3"></i>
     </a>
   </div>
   <div>
-    <a href={% url 'edit_album' pk=album.pk%} class="f8 blue no-underline underline-hover"><i class="fa fa-edit ph2 pink"></i>edit</a>
+  <a href={% url 'edit_album' pk=album.pk%} class="f8 blue no-underline underline-hover"><i class="fa fa-edit ph2 pink"></i>edit</a>
   <a href={% url 'delete_album' pk=album.pk%} class="f8 blue no-underline underline-hover"><i class="fa fa-times ph2 pink"></i>delete</a>
   </div>
 </div>
