@@ -15,8 +15,11 @@ def home(request):
 
 @login_required
 def list_albums(request):
-    albums = Album.objects.all().order_by("title")
-    return render(request, "music/list_albums.html", {"albums": albums})
+    sort_by = request.GET.get("sort") or "title"
+    albums = Album.objects.order_by(sort_by)
+    return render(
+        request, "music/list_albums.html", {"albums": albums, "sort_by": sort_by}
+    )
 
 
 def check_admin_user(user):

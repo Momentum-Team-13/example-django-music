@@ -11,6 +11,14 @@
 
 <section class="album-list">
   <h1>All Albums</h1>
+  <div class="sort">
+    <ul class="list pl0">
+      <li class="dib mr1 mb2"><a href="?sort=title" class="ma1 f6 f5-ns b db pa2 link dim dark-gray ba b--black-20">Sort by title</a></li>
+      <li class="dib mr1 mb2"><a href="?sort=artist" class="ma1 f6 f5-ns b db pa2 link dim dark-gray ba b--black-20">Sort by artist</a></li>
+      <li class="dib mr1 mb2"><a href="?sort=release_date" class="ma1 f6 f5-ns b db pa2 link dim dark-gray ba b--black-20">Sort by release date</a></li>
+    </ul>
+    <div class="mid-gray f6 i">Sorted by {{ sort_by }}</div>
+  </div>
   {% for album in albums %}
   <div class="album mv4 pa3 br1 measure-narrow ba b--light-silver">
       <a href={% url 'show_album' pk=album.pk %} class="album_title f3 fw6 db dark-pink no-underline underline-hover">{{ album.title }}</a>
