@@ -1,8 +1,10 @@
+from xml.sax.handler import all_properties
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Album, Artist, Genre
 from .forms import AlbumForm
+from .view_helpers import album_is_favorited
 
 
 def home(request):
@@ -38,10 +40,11 @@ def add_album(request):
 
 def show_album(request, pk):
     album = get_object_or_404(Album, pk=pk)
+    favorited = album_is_favorited(album, request.user)
     return render(
         request,
         "music/show_album.html",
-        {"album": album, "genres": album.genres.all()},
+        {"album": album, "genres": album.genres.all(), "favorited": favorited},
     )
 
 
@@ -77,3 +80,15 @@ def show_genre(request, slug):
     albums = genre.albums.all()
 
     return render(request, "music/show_genre.html", {"genre": genre, "albums": albums})
+
+
+@login_required
+def add_favorite(request, album_pk):
+    # when we create a M2M relationship, we need TWO instances
+    # here we need the album object AND the user object
+    album = get_object_or_404(Album, pk=album_pk)
+    user = request.user
+    user.favorite_albums.add(album)
+    favorited = album_is_favorited(album, request.user)
+    # just redirect to the show_album page
+    return redirect("show_album", pk=album.pk)

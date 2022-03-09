@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from users.models import CustomUser
 
 
 class BaseModel(models.Model):
@@ -17,6 +18,7 @@ class Album(BaseModel):
     )
     release_date = models.DateField(blank=True, null=True)
     genres = models.ManyToManyField("Genre", related_name="albums")
+    favorited_by = models.ManyToManyField(CustomUser, related_name="favorite_albums")
 
     def __repr__(self):
         return f"<Album {self.title} pk={self.pk} >"
