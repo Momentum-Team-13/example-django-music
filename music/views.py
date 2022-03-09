@@ -89,6 +89,5 @@ def add_favorite(request, album_pk):
     album = get_object_or_404(Album, pk=album_pk)
     user = request.user
     user.favorite_albums.add(album)
-    favorited = album_is_favorited(album, request.user)
     # just redirect to the show_album page
     return redirect("show_album", pk=album.pk)
