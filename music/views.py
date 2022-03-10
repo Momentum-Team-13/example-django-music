@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Album, Artist, Genre
 from .forms import AlbumForm
-from .view_helpers import album_is_favorited
+from .view_helpers import album_is_favorited, check_admin_user
 
 
 def home(request):
@@ -22,10 +22,6 @@ def list_albums(request):
     )
 
 
-def check_admin_user(user):
-    return user.is_staff
-
-
 @login_required
 @user_passes_test(check_admin_user)
 def add_album(request):
@@ -41,6 +37,7 @@ def add_album(request):
     return render(request, "music/add_album.html", {"form": form})
 
 
+@login_required
 def show_album(request, pk):
     album = get_object_or_404(Album, pk=pk)
     favorited = album_is_favorited(album, request.user)
@@ -60,6 +57,8 @@ def show_album(request, pk):
     )
 
 
+@login_required
+@user_passes_test(check_admin_user)
 def edit_album(request, pk):
     album = get_object_or_404(Album, pk=pk)
     if request.method == "GET":
@@ -69,10 +68,14 @@ def edit_album(request, pk):
         if form.is_valid():
             form.save()
             return redirect("list_albums")
+        else:
+            print(form.errors)
 
     return render(request, "music/edit_album.html", {"form": form, "album": album})
 
 
+@login_required
+@user_passes_test(check_admin_user)
 def delete_album(request, pk):
     album = get_object_or_404(Album, pk=pk)
 
@@ -84,6 +87,7 @@ def delete_album(request, pk):
     return render(request, "music/delete_album.html", {"album": album})
 
 
+@login_required
 def show_genre(request, slug):
     # albums = Album.objects.filter(genres__slug=slug)
     # I could do this ☝️ but...
@@ -105,6 +109,7 @@ def add_favorite(request, album_pk):
     return redirect("show_album", pk=album.pk)
 
 
+@login_required
 def delete_favorite(request, album_pk):
     album = get_object_or_404(Album, pk=album_pk)
     request.user.favorite_albums.remove(album)
