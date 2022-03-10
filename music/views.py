@@ -13,10 +13,6 @@ def home(request):
     return render(request, "music/home.html")
 
 
-def something_cool(req):
-    pass
-
-
 @login_required
 def list_albums(request):
     sort_by = request.GET.get("sort") or "title"
