@@ -24,6 +24,11 @@
       <a href={% url 'show_album' pk=album.pk %} class="album_title f3 fw6 db dark-pink no-underline underline-hover">{{ album.title }}</a>
       <p class="mv3 f4">{{ album.artist.name }} </p>
       <p class="mv3 f6 i gray">{{ album.release_date }} </p>
+      {% if album.favorited %}
+        <div class="favorite">
+            <i class="fas fa-heart hot-pink f3"></i>
+        </div>
+      {% endif %}
   </div>
   {% empty %}
   <h2>Sorry, there are no results for that search term.</h2>

@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from .models import Album, Artist, Genre
+from users.models import CustomUser
 from .forms import AlbumForm
 from .view_helpers import album_is_favorited, check_admin_user
+from django.db.models import Exists, OuterRef
 
 
 def home(request):
@@ -15,7 +17,13 @@ def home(request):
 @login_required
 def list_albums(request):
     sort_by = request.GET.get("sort") or "title"
-    albums = Album.objects.order_by(sort_by)
+    albums = Album.objects.annotate(
+        favorited=Exists(
+            CustomUser.objects.filter(
+                favorite_albums=OuterRef("pk"), pk=request.user.pk
+            )
+        )
+    ).order_by(sort_by)
     return render(
         request, "music/list_albums.html", {"albums": albums, "sort_by": sort_by}
     )
