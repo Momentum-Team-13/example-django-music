@@ -14,6 +14,7 @@ django-registration-redux = "*"
 bpython = "*"
 black = "*"
 flake8 = "*"
+pdbpp = "*"
 
 [requires]
 python_version = "3.10"
