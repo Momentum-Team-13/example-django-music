@@ -5,7 +5,7 @@ from .models import Album, Artist, Genre
 from users.models import CustomUser
 from .forms import AlbumForm
 from .view_helpers import album_is_favorited, check_admin_user
-from django.db.models import Exists, OuterRef
+from django.db.models import Exists, OuterRef, Q
 
 
 def home(request):
@@ -122,3 +122,44 @@ def delete_favorite(request, album_pk):
     request.user.favorite_albums.remove(album)
 
     return redirect("show_album", pk=album.pk)
+
+
+def search_by_title(request):
+    search_term = request.GET.get("q")
+    if search_term:
+        # search the database using the search term from query params
+        results = Album.objects.filter(title__icontains=search_term)
+    else:
+        return redirect("list_albums")
+
+    # send back a response with the filter query results
+    return render(request, "music/list_albums.html", {"albums": results})
+
+
+def search_by_title_and_artist(request):
+    """Return results for a search on title AND artist."""
+    # ?artist=prince&title=raspberry
+    artist_search_term = request.GET.get("artist")
+    title_search_term = request.GET.get("title")
+    # query the database
+    # results have to match BOTH title and artist with this syntax
+    results = Album.objects.filter(
+        title__icontains=title_search_term, artist__name__icontains=artist_search_term
+    )
+    # return the results using the list template
+    # you don't have to do this! You could render a template that is specifically created for search results.
+    return render(request, "music/list_albums.html", {"albums": results})
+
+
+def search_by_artist_or_title(request):
+    """Return results for a search on title OR artist."""
+    # this search could work with the existing search form
+    query = request.GET.get("q")
+    # search using a logical OR operator, the `|` character, and Django's `Q` objects
+    # https://docs.djangoproject.com/en/4.0/topics/db/queries/#complex-lookups-with-q-objects
+    # results can match EITHER album title OR artist name
+    results = Album.objects.filter(
+        Q(title__icontains=query) | Q(artist__name__icontains=query)
+    )
+
+    return render(request, "albums/list_albums.html", {"albums": results})
