@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block javascript %}
+<script src={% static "js/show_album.js" %} defer></script>
+{% endblock javascript %}
+
 {% block content %}
 
 <h3>Album Detail</h3>
