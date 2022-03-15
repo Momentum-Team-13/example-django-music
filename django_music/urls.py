@@ -38,7 +38,7 @@ urlpatterns = [
         name="delete_favorite",
     ),
     path("genres/<slug:slug>", music_views.show_genre, name="show_genre"),
-    path("search/", music_views.search_by_title, name="search"),
+    path("search/", music_views.search, name="search"),
 ]
 
 if settings.DEBUG:

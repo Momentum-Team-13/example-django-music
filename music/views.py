@@ -124,16 +124,27 @@ def delete_favorite(request, album_pk):
     return redirect("show_album", pk=album.pk)
 
 
-def search_by_title(request):
-    search_term = request.GET.get("q")
-    if search_term:
+def search(request):
+    title_search_term = request.GET.get("title")
+    artist_search_term = request.GET.get("artist")
+    if title_search_term:
         # search the database using the search term from query params
-        results = Album.objects.filter(title__icontains=search_term)
+        results = Album.objects.filter(title__icontains=title_search_term).order_by(
+            "title"
+        )
+    elif artist_search_term:
+        results = Album.objects.filter(
+            artist__name__icontains=artist_search_term
+        ).order_by("title")
     else:
         return redirect("list_albums")
 
     # send back a response with the filter query results
-    return render(request, "music/list_albums.html", {"albums": results})
+    return render(
+        request,
+        "music/list_albums.html",
+        {"albums": results, "sort_by": "title"},
+    )
 
 
 def search_by_title_and_artist(request):

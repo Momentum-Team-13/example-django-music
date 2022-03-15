@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+{% block javascript %}
+<script src={% static 'js/list_albums.js' %} defer></script>
+{% endblock javascript %}
+
 {% block content %}
 {% if messages %}
 <div class="messages ba br2 b--silver bg-washed-green pa2">
@@ -11,10 +17,17 @@
 
 <section class="album-list">
   <h1>All Albums</h1>
+  <div class="mv2">
+    <span class="f6">Search by</span>
+    <select id="search-type-select">
+      <option>title</option>
+      <option>artist</option>
+    </select>
+  </div>
   <section class="album-search">
-    <form action={% url 'search' %} method="GET">
-      <input type="text" class="input-reset ba b--black-20 pa2 mb2 db w-50" name="q">
-      <button type="submit" class="f6 link dim br-pill ba ph3 pv2 mb2 dib dark-gray">Search by title</button>
+    <form action={% url 'search' %} method="GET" id="search-form">
+      <input type="text" class="input-reset ba b--black-20 pa2 mb2 w-50" name="title" id="search-input">
+      <button type="submit" class="f6 link dim br-pill ba ph3 pv2 mb2 dib dark-gray">Search</button>
     </form>
   </section>
   <div class="sort">
@@ -23,7 +36,9 @@
       <li class="dib mr1 mb2"><a href="?sort=artist" class="ma1 f6 f5-ns b db pa2 link dim dark-gray ba b--black-20">Sort by artist</a></li>
       <li class="dib mr1 mb2"><a href="?sort=release_date" class="ma1 f6 f5-ns b db pa2 link dim dark-gray ba b--black-20">Sort by release date</a></li>
     </ul>
+    {% if albums %}
     <div class="mid-gray f6 i">Sorted by {{ sort_by }}</div>
+    {% endif %}
   </div>
   {% for album in albums %}
   <div class="album mv4 pa3 br1 measure-narrow ba b--light-silver">
