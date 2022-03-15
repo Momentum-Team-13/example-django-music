@@ -1,3 +1,4 @@
+from django.http import HttpResponseNotAllowed, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
@@ -48,10 +49,7 @@ def add_album(request):
 def show_album(request, pk):
     album = get_object_or_404(Album, pk=pk)
     favorited = album_is_favorited(album, request.user)
-    if favorited:
-        toggle_favorited_url = "delete_favorite"
-    else:
-        toggle_favorited_url = "add_favorite"
+
     return render(
         request,
         "music/show_album.html",
@@ -59,7 +57,6 @@ def show_album(request, pk):
             "album": album,
             "genres": album.genres.all(),
             "favorited": favorited,
-            "toggle_favorited_url": toggle_favorited_url,
         },
     )
 
@@ -106,13 +103,23 @@ def show_genre(request, slug):
 
 
 @login_required
-def add_favorite(request, album_pk):
+def favorite(request, album_pk):
+    # I have to check the headers (which I set myself in the js!)
+    request_is_ajax = request.headers.get("x-requested-with") == "XMLHttpRequest"
     # when we create a M2M relationship, we need TWO instances
     # here we need the album object AND the user object
     album = get_object_or_404(Album, pk=album_pk)
     user = request.user
-    user.favorite_albums.add(album)
-    # just redirect to the show_album page
+    if request.method == "POST":
+        user.favorite_albums.add(album)
+        favorited = True
+    elif request.method == "DELETE":
+        user.favorite_albums.remove(album)
+        favorited = False
+
+    if request_is_ajax:
+        return JsonResponse({"weDidIt": "YAY", "favorited": favorited})
+
     return redirect("show_album", pk=album.pk)
 
 

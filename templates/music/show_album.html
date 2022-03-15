@@ -3,6 +3,7 @@
 {% load static %}
 
 {% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
 <script src={% static "js/show_album.js" %} defer></script>
 {% endblock javascript %}
 
@@ -19,7 +20,7 @@
     <a href={% url 'show_genre' slug=genre.slug %} class="f7 link br-pill ba bw1 ph2 pv1 mb2 dib white bg-dark-gray">{{genre}}</a>
   {% endfor %}
   <div class="favorite">
-    <a href={% url toggle_favorited_url album_pk=album.pk %} class="fav-link db">
+    <a href={% url 'favorite' album_pk=album.pk %} class="fav-link" id="fav-link" data-favorited={{favorited|lower}}>
       <i class="{% if favorited %} fas {% else %} far {% endif %} fa-heart hot-pink f3"></i>
     </a>
   </div>
