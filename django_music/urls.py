@@ -20,6 +20,7 @@ from music import views as music_views
 
 urlpatterns = [
     path("", music_views.home, name="home"),
+    # You need this for django-registration-redux
     path("auth/", include("registration.backends.simple.urls")),
     path("admin/", admin.site.urls),
     path("albums/", music_views.list_albums, name="list_albums"),
